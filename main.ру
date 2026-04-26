@@ -4,10 +4,6 @@ import json
 import sys
 
 
-# =========================
-# FILE MANAGER
-# =========================
-
 class FileManager:
     def __init__(self, filename):
         self.filename = filename
@@ -32,9 +28,7 @@ class FileManager:
             print(f"Output folder already exists: {folder}/")
 
 
-# =========================
-# DATA LOADER
-# =========================
+
 
 class DataLoader:
     def __init__(self, filename):
@@ -66,9 +60,7 @@ class DataLoader:
         print("------------------------------")
 
 
-# =========================
-# DATA ANALYSER (VARIANT C)
-# =========================
+
 
 class DataAnalyser:
     def __init__(self, students):
@@ -123,9 +115,7 @@ class DataAnalyser:
         print("------------------------------")
 
 
-# =========================
-# RESULT SAVER
-# =========================
+
 
 class ResultSaver:
     def __init__(self, result, output_path):
@@ -143,9 +133,7 @@ class ResultSaver:
             print(f"Error saving file: {e}")
 
 
-# =========================
-# MAIN
-# =========================
+
 
 def main():
     fm = FileManager("students.csv")
