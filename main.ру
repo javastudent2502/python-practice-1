@@ -1,0 +1,101 @@
+import os
+import csv
+import json
+
+print("Checking file...")
+if not os.path.exists("students.csv"):
+    print("Error: students.csv not found. Please download the file from LMS.")
+    exit()
+else:
+    print("File found: students.csv")
+
+print("Checking output folder...")
+if not os.path.exists("output"):
+    os.makedirs("output")
+    print("Output folder created: output/")
+
+students = []
+
+with open("students.csv", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        students.append(row)
+
+print(f"Total students: {len(students)}")
+
+print("First 5 rows:")
+print("------------------------------")
+
+for s in students[:5]:
+    print(f"{s['student_id']} | {s['age']} | {s['gender']} | {s['country']} | GPA: {s['GPA']}")
+
+print("------------------------------")
+
+low_sleep_gpas = []
+high_sleep_gpas = []
+
+for s in students:
+    sleep = float(s['sleep_hours'])
+    gpa = float(s['GPA'])
+
+    if sleep < 6:
+        low_sleep_gpas.append(gpa)
+    else:
+        high_sleep_gpas.append(gpa)
+
+avg_low = round(sum(low_sleep_gpas) / len(low_sleep_gpas), 2)
+avg_high = round(sum(high_sleep_gpas) / len(high_sleep_gpas), 2)
+diff = round(avg_high - avg_low, 2)
+
+print("------------------------------")
+print("Sleep vs GPA Analysis")
+print("------------------------------")
+
+print(f"Students sleeping < 6 hours : {len(low_sleep_gpas)}")
+print(f"Average GPA (< 6 hours) : {avg_low}")
+
+print(f"Students sleeping >= 6 hours : {len(high_sleep_gpas)}")
+print(f"Average GPA (>= 6 hours) : {avg_high}")
+
+print(f"Difference in avg GPA : {diff}")
+
+print("------------------------------")
+
+result = {
+    "analysis": "Sleep vs GPA",
+    "total_students": len(students),
+    "low_sleep": {
+        "students": len(low_sleep_gpas),
+        "avg_gpa": avg_low
+    },
+    "high_sleep": {
+        "students": len(high_sleep_gpas),
+        "avg_gpa": avg_high
+    },
+    "gpa_difference": diff
+}
+
+with open("output/result.json", "w") as f:
+    json.dump(result, f, indent=4)
+
+print("==============================")
+print("ANALYSIS RESULT")
+print("==============================")
+
+print("Analysis : Sleep vs GPA")
+print(f"Total students : {len(students)}")
+
+print("------------------------------")
+print("Sleep < 6 hours:")
+print(f"Students : {len(low_sleep_gpas)}")
+print(f"Average GPA : {avg_low}")
+
+print("Sleep >= 6 hours:")
+print(f"Students : {len(high_sleep_gpas)}")
+print(f"Average GPA : {avg_high}")
+
+print("------------------------------")
+print(f"GPA difference : {diff}")
+
+print("==============================")
+print("Result saved to output/result.json")
